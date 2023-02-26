@@ -4,20 +4,23 @@
 
 import Foundation
 
-class RemoteFeedLoader {
-    let client: HTTPClient
-    let url: URL
+public protocol HTTPClient {
+    func get(from url: URL)
+}
+
+// Dont wanna allow subclassing
+public final class RemoteFeedLoader {
     
-    init(url: URL ,client: HTTPClient) {
+    // arrange this order based on the init
+    private let url: URL
+    private let client: HTTPClient
+    
+    public init(url: URL ,client: HTTPClient) {
         self.client = client
         self.url = url
     }
     
-    func load() {
+    public func load() {
         client.get(from: url)
     }
-}
-
-protocol HTTPClient {
-    func get(from url: URL)
 }

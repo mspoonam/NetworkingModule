@@ -3,7 +3,7 @@
 //
 
 import XCTest
-@testable import NetworkingModule
+import NetworkingModule
 
 final class RemoteFeedLoaderTests: XCTestCase {
     

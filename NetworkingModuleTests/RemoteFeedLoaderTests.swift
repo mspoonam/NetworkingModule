@@ -70,7 +70,13 @@ final class RemoteFeedLoaderTests: XCTestCase {
     
     func test_load_deliversEmptyErrorOn200HTTPResponse() {
         let (sut , client) = makeSUT()
-        
+        var captureResult = [RemoteFeedLoader.Result]()
+        sut.load {
+            captureResult.append($0)
+        }
+        let emptyJSON = Data.init("{\"items\": []}".utf8)
+        client.complete(withStatusCode: 200, data: emptyJSON)
+        XCTAssertEqual(captureResult, [])
     }
     
     // MARK:- Helpers

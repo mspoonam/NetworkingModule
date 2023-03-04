@@ -35,11 +35,17 @@ public final class RemoteFeedLoader {
         self.url = url
     }
     
-    public func load(completion: @escaping (Result)->Void) {
+    // MARK: there is another interesting thing - how the switch changes from case .success: to case case let .success(data, response)
+    
+    public func load(completion: @escaping (RemoteFeedLoader.Result)->Void) {
         client.get(from: url) { result in
             switch result {
-            case .success:
-                completion(.failure(.invalidData))
+            case let .success(data, response):
+                if let json = try? JSONSerialization.jsonObject(with: data) {
+                    completion(.success([]))
+                } else {
+                    completion(.failure(.invalidData))
+                }
             case .failure:
                 completion(.failure(.connectivity))
             }

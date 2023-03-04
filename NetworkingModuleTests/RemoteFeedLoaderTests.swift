@@ -37,21 +37,12 @@ final class RemoteFeedLoaderTests: XCTestCase {
     func test_load_deliversErrorOnClientError() {
         let (sut , client) = makeSUT()
         
-        // Arrange
-        var capturedError =  [RemoteFeedLoader.Error]()
+        expect(sut, toCompleteWithError: .connectivity, when: {
+            // this is stubbing
+            let clientError = NSError(domain: "Test", code: 0)
+            client.complete(with: clientError)
+        })
         
-        // Arrange
-        sut.load { error in
-            // capturing data
-            capturedError.append(error)
-        }
-        
-        // this is stubbing
-        let clientError = NSError(domain: "Test", code: 0)
-        client.complete(with: clientError)
-        
-        // Assert
-        XCTAssertEqual(capturedError, [.connectivity])
     }
     
     func test_load_deliversErrorOnNon200HTTPResponse() {
@@ -59,16 +50,11 @@ final class RemoteFeedLoaderTests: XCTestCase {
         
         let samples = [199, 201, 300, 400, 500]
         samples.enumerated().forEach { index, code in
-            // Arrange
-            var capturedError =  [RemoteFeedLoader.Error]()
-            // Arrange
-            sut.load {
-                capturedError.append($0)
-            }
-            // capturing values
-            client.complete(withStatusCode: code, at: index)
-            // Assert
-            XCTAssertEqual(capturedError, [.invalidData])
+            
+            expect(sut, toCompleteWithError: .invalidData, when: {
+                // capturing values
+                client.complete(withStatusCode: code, at: index)
+            })
         }
     }
     

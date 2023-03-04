@@ -96,7 +96,7 @@ final class RemoteFeedLoaderTests: XCTestCase {
         let itemJson = [
             "items": [item1Json, item2Json]
         ]
-        
+        makeItem(id: UUID(), imageURL: URL(string:"http://a.com")!)
         expect(sut, toCompleteWith: .success([item1, item2]), when: {
             
             let json = try! JSONSerialization.data(withJSONObject: itemJson)
@@ -110,6 +110,22 @@ final class RemoteFeedLoaderTests: XCTestCase {
         let client = HTTPClientSpy()
         let sut = RemoteFeedLoader(url: url, client: client)
         return (sut, client)
+    }
+    
+    private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (item: FeedItem, json: [String: Any]) {
+        let item = FeedItem(id: id, description: description, location: location, imageURL: imageURL)
+        let json = [
+            "id": item.id.uuidString,
+            "description": item.description,
+            "location": item.location,
+            "image": item.imageURL.absoluteString
+        ].reduce(into: [String: Any]()) { (acc, e) in
+            if let value = e.value {
+                acc[e.key] = value
+            }
+        }
+        
+        return (item: item, json: json)
     }
     
     private func expect(_ sut: RemoteFeedLoader,

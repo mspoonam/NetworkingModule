@@ -76,7 +76,7 @@ final class RemoteFeedLoaderTests: XCTestCase {
         }
         let emptyJSON = Data.init("{\"items\": []}".utf8)
         client.complete(withStatusCode: 200, data: emptyJSON)
-        XCTAssertEqual(captureResult, [])
+        XCTAssertEqual(captureResult, [.success([])])
     }
     
     // MARK:- Helpers

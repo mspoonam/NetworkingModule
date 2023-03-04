@@ -64,12 +64,14 @@ final class RemoteFeedLoaderTests: XCTestCase {
         sut.load {
             capturedError.append($0)
         }
-        
-        // this is stubbing
-        client.complete(withStatusCode: 400)
-        
-        // Assert
-        XCTAssertEqual(capturedError, [.invalidData])
+//        using for loop and checking for some more http code here like 199, 201 etc
+        [199, 201, 300, 400, 500].forEach { code in
+            // capturing values
+            client.complete(withStatusCode: code)
+            // Assert
+            XCTAssertEqual(capturedError, [.invalidData])
+            capturedError = []
+        }
     }
     
     // MARK:- Helpers

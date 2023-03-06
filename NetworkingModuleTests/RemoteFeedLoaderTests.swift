@@ -95,6 +95,9 @@ final class RemoteFeedLoaderTests: XCTestCase {
     private func makeSUT(url: URL = URL(string: "https://a-url.com")!) -> (sut: RemoteFeedLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
         let sut = RemoteFeedLoader(url: url, client: client)
+        addTeardownBlock { 
+            XCTAssertNil(sut, "Instance must be nil for RemoteFeedLoader")
+        }
         return (sut, client)
     }
     

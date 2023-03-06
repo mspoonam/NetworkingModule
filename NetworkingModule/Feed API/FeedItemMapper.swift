@@ -12,12 +12,16 @@ internal class FeedItemMapper {
               let rootItem = try? JSONDecoder().decode(ItemRoot.self, from: data) else {
             return .failure(.invalidData)
         }
-        let items = rootItem.items.map {$0.ele}
+        let items = rootItem.feed
         return .success(items)
     }
     
     private struct ItemRoot: Decodable {
         let items: [Item]
+        
+        var feed: [FeedItem] {
+            items.map {$0.ele}
+        }
     }
     
     private struct Item: Decodable {

@@ -14,7 +14,7 @@ internal class FeedItemMapper {
     private struct ItemRoot: Decodable {
         let items: [Item]
     }
-
+    
     private struct Item: Decodable {
         let id: UUID
         let description: String?

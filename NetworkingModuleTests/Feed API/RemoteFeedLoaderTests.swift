@@ -5,6 +5,7 @@
 import XCTest
 import NetworkingModule
 
+
 final class RemoteFeedLoaderTests: XCTestCase {
     
     func test_init_doesnotRequestDataFromURL() {

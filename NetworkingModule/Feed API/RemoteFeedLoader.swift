@@ -5,7 +5,7 @@
 import Foundation
 
 // Dont wanna allow subclassing
-public final class RemoteFeedLoader {
+public final class RemoteFeedLoader: FeedLoader {
     
     // arrange this order based on the init
     private let url: URL

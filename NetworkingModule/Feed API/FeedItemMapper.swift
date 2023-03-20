@@ -4,8 +4,8 @@
 
 import Foundation
 
-internal class FeedItemMapper {
-    static var OK_200: Int { return 200 }
+internal final class FeedItemMapper {
+    private static var OK_200: Int { return 200 }
     
     internal static func map(_ data: Data, _ response: HTTPURLResponse) -> RemoteFeedLoader.Result {
         guard response.statusCode == OK_200,
